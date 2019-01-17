@@ -3,27 +3,31 @@ require 'pry'
 require 'nokogiri'
 require 'open-uri'
 
+def crypto 
+	curr_price =  Array.new
+	curr_name =  Array.new
+	curr_hash =  Array.new
 
-curr_price =  Array.new
-curr_name =  Array.new
-curr_hash =  Hash.new
+	page = Nokogiri::HTML(open("https://coinmarketcap.com/all/views/all/"))   
+	page.xpath('//tbody//td[3]').each do |node|
+	  curr_name << node.text
+	end
 
-page = Nokogiri::HTML(open("https://coinmarketcap.com/all/views/all/"))   
-page.xpath('//tbody//td[3]').each do |node|
-  curr_name << node.text
+	page.xpath('//tbody//td[5]/a').each do |node|
+	  curr_price << node.text[1..-1].to_f
+	end
+
+	curr_name.size.times do |i|
+		curr_hash << {curr_name[i] => curr_price[i]}
+	end
+
+
+	#puts curr_hash["BTC"]
+	return curr_hash
 end
 
-page.xpath('//tbody//td[5]/a').each do |node|
-  curr_price << node.text[1..-1].to_f
-end
+puts crypto
 
-curr_name.size.times do |i|
-	curr_hash[curr_name[i]] = curr_price[i]
-end
-
-
-puts curr_hash["BTC"]
-puts curr_hash
 =begin
 require_relative ''
 
