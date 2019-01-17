@@ -29,7 +29,7 @@ def perform
 
 	url_list.each_with_index do |deputy_url,i|
 
-		hash_deputy << { "first_name" => name_list[i][1],"family_name" => name_list[i][0], "email" => get_deputy_email(deputy_url)}
+		hash_deputy << { "first_name" => name_list[i][1],"family_name" => name_list[i][0][1..-1], "email" => get_deputy_email(deputy_url)}
 		if i > 600
 			return hash_deputy
 		end
